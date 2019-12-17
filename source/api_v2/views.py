@@ -18,7 +18,6 @@ class LogoutView(APIView):
 
 
 class QuoteViewSet(ModelViewSet):
-    print('i am here', Quote.objects.all())
     queryset = Quote.objects.none()
     serializer_class = QuotesSerializer
 
@@ -28,7 +27,6 @@ class QuoteViewSet(ModelViewSet):
         return Quote.objects.all()
 
     def get_permissions(self):
-        print('get_permissions')
         if self.action not in ['update', 'partial_update', 'destroy']:
             return [AllowAny()]
         return [IsAuthenticated()]

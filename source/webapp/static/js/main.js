@@ -139,6 +139,7 @@ function rateDown(id) {
     });
 }
 
+
 function getQuotes() {
     let request = makeRequest('quote', 'get', false);
     request.done(function(data, status, response) {
@@ -149,7 +150,7 @@ function getQuotes() {
                 <p id="rating_${item.id}">${item.rating}</p>
                 <p><a href="#" class="btn btn-success" id="rate_up_${item.id}">+</a>
                 <a href="#" class="btn btn-danger" id="rate_down_${item.id}">-</a></>
-                 <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                 <p><button type="button" onclick="oneItem(${item.id})" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                   read more
                 </button></p>
             </div>`));
@@ -170,9 +171,28 @@ function getQuotes() {
     });
 }
 
+function oneItem(id) {
+    console.log(id, 'item haba');
+    $.ajax({
+        url:'http://localhost:8000/api/v2/quote/' + id,
+        method: 'GET',
+        dataType: 'json'
+    }).then(response => {
+        console.log(response, 'response');
+        var element = $('.info_class');
+        let p = $('<p></p>');
+        element.html(p);
+        element.append(response.text, response.author_name, Date(response.created_at))
+
+
+    })
+}
+
+
 $(document).ready(function() {
     setUpGlobalVars();
     setUpAuth();
     checkAuth();
     getQuotes();
+    oneItem();
 });
